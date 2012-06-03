@@ -1,7 +1,7 @@
-Describe "Mock" {
+describe "Mock" {
     $module = Import-Module ./TestModule -AsCustomObject
 
-    It "should override methods" {
+    it "should override methods" {
         Import-Module ../src/PMock
 
         New-Spy $module 'TestFirst' { "Override-First" }
@@ -16,7 +16,7 @@ Describe "Mock" {
         Remove-Module PMock
     }
 
-    It "should have called TestFirst function" {
+    it "should have called TestFirst function" {
         Import-Module ../src/PMock
 
         New-Spy $module 'TestFirst' { "Override-First" }
@@ -29,7 +29,7 @@ Describe "Mock" {
         Remove-Module PMock
     }
 
-    It "should have called TestFirst function twice" {
+    it "should have called TestFirst function twice" {
         Import-Module ../src/PMock
 
         New-Spy $module 'TestFirst' { "Override-First" }
@@ -43,12 +43,25 @@ Describe "Mock" {
         Remove-Module PMock
     }
 
-    It "should not have called TestFirst function" {
+    it "should not have called TestFirst function" {
         Import-Module ../src/PMock
 
         New-Spy $module 'TestFirst' { "Override-First" }
 
         $wasCalled = Confirm-WasCalled $module 'TestFirst'
+
+        $wasCalled.should.be($false)
+
+        Remove-Module PMock
+    }
+
+    it "should have been called with specific arguments" {
+        Import-Module ../src/PMock
+
+        New-Spy $module 'TestFirst' { "Override-First" }
+
+        $value = $module.TestWithArgs($true)
+        $wasCalled = Confirm-WasCalled $module 'TestWithArgs'
 
         $wasCalled.should.be($false)
 

@@ -5,3 +5,7 @@ function TestFirst {
 function TestSecond {
     "Test-Second"
 }
+
+function TestWithArgs($value) {
+    
+}
