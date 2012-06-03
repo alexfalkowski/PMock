@@ -1,7 +1,7 @@
-function Test-First {
+function TestFirst {
     "Test-First"
 }
 
-function Test-Second {
+function TestSecond {
     "Test-Second"
 }
