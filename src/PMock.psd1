@@ -17,7 +17,7 @@
 	ScriptsToProcess = @()
 	TypesToProcess = @()
 	FormatsToProcess = @()
-	FunctionsToExport = @('New-Spy', 'Confirm-WasCalled')
+	FunctionsToExport = @('New-Mock', 'Confirm-Mock')
 	CmdletsToExport = '*'
 	VariablesToExport = ''
 	AliasesToExport = ''

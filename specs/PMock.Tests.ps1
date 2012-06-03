@@ -4,8 +4,8 @@ describe "Mock" {
     it "should override methods" {
         Import-Module ../src/PMock
 
-        New-Spy $module 'TestFirst' { "Override-First" }
-        New-Spy $module 'TestSecond' { "Override-Second" }
+        New-Mock $module 'TestFirst' { "Override-First" }
+        New-Mock $module 'TestSecond' { "Override-Second" }
 
         $first = $module.TestFirst()
         $second = $module.TestSecond()
@@ -19,10 +19,10 @@ describe "Mock" {
     it "should have called TestFirst function" {
         Import-Module ../src/PMock
 
-        New-Spy $module 'TestFirst' { "Override-First" }
+        New-Mock $module 'TestFirst' { "Override-First" }
 
         $first = $module.TestFirst()
-        $wasCalled = Confirm-WasCalled $module 'TestFirst'
+        $wasCalled = Confirm-Mock $module 'TestFirst'
 
         $wasCalled.should.be($true)
 
@@ -32,11 +32,11 @@ describe "Mock" {
     it "should have called TestFirst function twice" {
         Import-Module ../src/PMock
 
-        New-Spy $module 'TestFirst' { "Override-First" }
+        New-Mock $module 'TestFirst' { "Override-First" }
 
         $first = $module.TestFirst()
         $first = $module.TestFirst()
-        $wasCalled = Confirm-WasCalled $module 'TestFirst'
+        $wasCalled = Confirm-Mock $module 'TestFirst'
 
         $wasCalled.should.be($true)
 
@@ -46,9 +46,9 @@ describe "Mock" {
     it "should not have called TestFirst function" {
         Import-Module ../src/PMock
 
-        New-Spy $module 'TestFirst' { "Override-First" }
+        New-Mock $module 'TestFirst' { "Override-First" }
 
-        $wasCalled = Confirm-WasCalled $module 'TestFirst'
+        $wasCalled = Confirm-Mock $module 'TestFirst'
 
         $wasCalled.should.be($false)
 
@@ -58,10 +58,10 @@ describe "Mock" {
     it "should have been called with specific arguments" {
         Import-Module ../src/PMock
 
-        New-Spy $module 'TestFirst' { "Override-First" }
+        New-Mock $module 'TestFirst' { "Override-First" }
 
         $value = $module.TestWithArgs($true)
-        $wasCalled = Confirm-WasCalled $module 'TestWithArgs'
+        $wasCalled = Confirm-Mock $module 'TestWithArgs'
 
         $wasCalled.should.be($false)
 

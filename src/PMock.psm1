@@ -1,4 +1,4 @@
-function New-Spy($module, $functionName, $script) {
+function New-Mock($module, $functionName, $script) {
     $newScriptBlock = { 
         $privateData = $MyInvocation.MyCommand.Module.PrivateData;
         
@@ -11,6 +11,6 @@ function New-Spy($module, $functionName, $script) {
     Add-Member -inputobject $module -membertype ScriptMethod -name $functionName -value $newScriptBlock -passthru -force | out-null
 }
 
-function Confirm-WasCalled($module, $functionName) {
+function Confirm-Mock($module, $functionName) {
     $MyInvocation.MyCommand.Module.PrivateData.ContainsKey($functionName)
 }
