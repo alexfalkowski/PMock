@@ -1,11 +1,11 @@
-function TestFirst {
+function Test-First {
     "Test-First"
 }
 
-function TestSecond {
+function Test-Second {
     "Test-Second"
 }
 
-function TestWithArgs($value) {
+function Test-WithArgs($value) {
     
 }
