@@ -16,7 +16,7 @@ describe "Mock" {
         Remove-Module PMock
     }
 
-    it "should have called TestFirst function" {
+    it "should Confirm-Mock when calling TestFirst function once" {
         Import-Module ../src/PMock
 
         New-Mock $module 'TestFirst' { "Override-First" }
@@ -29,7 +29,7 @@ describe "Mock" {
         Remove-Module PMock
     }
 
-    it "should have called TestFirst function twice" {
+    it "should Confirm-Mock when calling TestFirst function twice" {
         Import-Module ../src/PMock
 
         New-Mock $module 'TestFirst' { "Override-First" }
@@ -43,7 +43,21 @@ describe "Mock" {
         Remove-Module PMock
     }
 
-    it "should not have called TestFirst function" {
+    it "should only register one event when calling Confirm-Mock twice" {
+        Import-Module ../src/PMock
+
+        New-Mock $module 'TestFirst' { "Override-First" }
+
+        $first = $module.TestFirst()
+        $wasCalled = Confirm-Mock $module 'TestFirst'
+        $wasCalled = Confirm-Mock $module 'TestFirst'
+
+        $wasCalled.should.be($false)
+
+        Remove-Module PMock
+    }
+
+    it "should not Confirm-Mock when the TestFirst function was not called" {
         Import-Module ../src/PMock
 
         New-Mock $module 'TestFirst' { "Override-First" }
@@ -55,7 +69,7 @@ describe "Mock" {
         Remove-Module PMock
     }
 
-    it "should have been called with specific arguments" {
+    it "should Confirm-Mock when TestFirst function is called with specific arguments" {
         Import-Module ../src/PMock
 
         New-Mock $module 'TestFirst' { "Override-First" }

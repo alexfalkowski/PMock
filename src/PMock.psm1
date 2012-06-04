@@ -1,10 +1,6 @@
 function New-Mock($module, $functionName, $script) {
     $newScriptBlock = { 
-        $privateData = $MyInvocation.MyCommand.Module.PrivateData;
-        
-        if (!($privateData.ContainsKey($functionName))) {
-            $privateData.Add($functionName, $true);
-        }
+        New-Event -SourceIdentifier $functionName | out-null
          
         &$script 
     }.GetNewClosure()
@@ -12,5 +8,9 @@ function New-Mock($module, $functionName, $script) {
 }
 
 function Confirm-Mock($module, $functionName) {
-    $MyInvocation.MyCommand.Module.PrivateData.ContainsKey($functionName)
+    $events = Get-Event -SourceIdentifier $functionName -ea SilentlyContinue
+
+    Remove-Event -SourceIdentifier $functionName -ea SilentlyContinue | out-null
+
+    $events -and ($events.Length -gt 0)
 }

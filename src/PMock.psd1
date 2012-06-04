@@ -1,7 +1,7 @@
 @{
 	ModuleToProcess = 'PMock.psm1'
 	ModuleVersion = '1.0'
-	GUID = 'f25cd195-21d8-4e49-bc85-adc35946b3b2'
+	GUID = '69E223DB-89E5-485E-8993-CBE3817DFEB4'
 	Author = 'Alex Falkowski'
 	CompanyName = ''
 	Copyright = ''
@@ -23,5 +23,4 @@
 	AliasesToExport = ''
 	ModuleList = @()
 	FileList = @()
-	PrivateData = @{}
 }
