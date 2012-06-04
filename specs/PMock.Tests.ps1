@@ -78,7 +78,7 @@ describe "Mock" {
         $wasCalled = Confirm-Mock $module 'TestWithArgs'
 
         $value.should.be("Override-First True")
-        $wasCalled.should.be($false)
+        $wasCalled.should.be($true)
 
         Remove-Module PMock
     }
