@@ -7,5 +7,5 @@ function Test-Second {
 }
 
 function Test-WithArgs($value) {
-    
+    "Test-WithArgs"
 }
