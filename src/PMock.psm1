@@ -2,7 +2,7 @@ function New-Mock($module, $functionName, $script) {
     $newScriptBlock = { 
         New-Event -SourceIdentifier $functionName | out-null
          
-        &$script 
+        &$script $args 
     }.GetNewClosure()
     Add-Member -inputobject $module -membertype ScriptMethod -name $functionName -value $newScriptBlock -passthru -force | out-null
 }

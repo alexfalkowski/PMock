@@ -72,11 +72,12 @@ describe "Mock" {
     it "should Confirm-Mock when TestFirst function is called with specific arguments" {
         Import-Module ../src/PMock
 
-        New-Mock $module 'TestFirst' { "Override-First" }
+        New-Mock $module 'TestWithArgs' { "Override-First $($args[0])" }
 
         $value = $module.TestWithArgs($true)
         $wasCalled = Confirm-Mock $module 'TestWithArgs'
 
+        $value.should.be("Override-First True")
         $wasCalled.should.be($false)
 
         Remove-Module PMock
