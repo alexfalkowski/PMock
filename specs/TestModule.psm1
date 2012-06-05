@@ -6,6 +6,10 @@ function Test-Second {
     "Test-Second"
 }
 
-function Test-WithArgs($value) {
-    "Test-WithArgs"
+function Test-WithSingleArgs($value) {
+    "Test-WithSingleArgs"
+}
+
+function Test-WithMultipleArgs($value1, $value2) {
+    "Test-WithMultipleArgs"
 }

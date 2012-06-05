@@ -4,19 +4,36 @@ function Set-Function($module, $functionName, $script) {
 
 function Set-AssertableFunction($module, $functionName, $script) {
     $newScriptBlock = { 
-        New-Event -SourceIdentifier $functionName | out-null
-        & $script $args 
+        New-Event -SourceIdentifier $functionName -EventArguments $args | out-null
+        Invoke-Command $script -ArgumentList $args
+        #&$script
     }.GetNewClosure()
 
     Set-Function $module $functionName $newScriptBlock
 }
 
-function Assert-FunctionWasCalled($module, $functionName, $arguments = @()) {
+function Assert-FunctionWasCalled() {
+    param (
+        $module,
+        $functionName,
+        [parameter(ValueFromRemainingArguments=$true)] $arguments = @()
+    )
+
     $events = Get-Event -SourceIdentifier $functionName -ea SilentlyContinue
     Remove-Event -SourceIdentifier $functionName -ea SilentlyContinue | out-null
 
     if ($events) {
-        return $true
+        $sourceArgs = @()
+
+        if ($events.SourceArgs) {
+            $sourceArgs = $events.SourceArgs
+        }
+
+        $compare = Compare-Object $arguments $sourceArgs
+
+        if ($compare -eq $null) {
+            return $true
+        }
     }
 
     return $false

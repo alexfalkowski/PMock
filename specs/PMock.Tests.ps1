@@ -23,7 +23,7 @@ describe "Mock" {
         Remove-Module PMock
     }
 
-    it "should Assert-FunctionWasCalled when calling TestFirst function once" {
+    it "should Assert-FunctionWasCalled when calling Test-First function once" {
         Import-Module ../src/PMock
 
         $functionName = 'Test-First'
@@ -35,7 +35,7 @@ describe "Mock" {
         Remove-Module PMock
     }
 
-    it "should Assert-FunctionWasCalled when calling TestFirst function twice" {
+    it "should Assert-FunctionWasCalled when calling Test-First function twice" {
         Import-Module ../src/PMock
 
         $functionName = 'Test-First'
@@ -61,7 +61,7 @@ describe "Mock" {
         Remove-Module PMock
     }
 
-    it "should not Assert-FunctionWasCalled when the TestFirst function was not called" {
+    it "should not Assert-FunctionWasCalled when the Test-First function was not called" {
         Import-Module ../src/PMock
 
         $functionName = 'Test-First'
@@ -72,15 +72,52 @@ describe "Mock" {
         Remove-Module PMock
     }
 
-    it "should Assert-FunctionWasCalled when TestFirst function is called with specific arguments" {
+    it "should Assert-FunctionWasCalled when Test-WithSingleArgs function is called with specific arguments" {
         Import-Module ../src/PMock
 
-        $functionName = 'Test-WithArgs'
+        $functionName = 'Test-WithSingleArgs'
         Set-AssertableFunction $module $functionName { "Override-First $($args[0])" }
-        $value = $module.'Test-WithArgs'($true)
-        $wasCalled = Assert-FunctionWasCalled $module $functionName
+        $value = $module.'Test-WithSingleArgs'($true)
+        $wasCalled = Assert-FunctionWasCalled $module $functionName $true
         $value.should.be("Override-First True")
         $wasCalled.should.be($true)
+
+        Remove-Module PMock
+    }
+
+    it "should not Assert-FunctionWasCalled when Test-WithSingleArgs function is called with wrong arguments" {
+        Import-Module ../src/PMock
+
+        $functionName = 'Test-WithSingleArgs'
+        Set-AssertableFunction $module $functionName { "Override-First" }
+        $value = $module.'Test-WithSingleArgs'($true)
+        $wasCalled = Assert-FunctionWasCalled $module $functionName $false
+        $wasCalled.should.be($false)
+
+        Remove-Module PMock
+    }
+
+    it "should Assert-FunctionWasCalled when Test-WithMultipleArgs function is called with specific arguments" {
+        Import-Module ../src/PMock
+
+        $functionName = 'Test-WithMultipleArgs'
+        Set-AssertableFunction $module $functionName { "Override-First $($args[0])" }
+        $value = $module.'Test-WithMultipleArgs'($true, $true)
+        $wasCalled = Assert-FunctionWasCalled $module $functionName $true $true
+        $value.should.be("Override-First True")
+        $wasCalled.should.be($true)
+
+        Remove-Module PMock
+    }
+
+    it "should not Assert-FunctionWasCalled when Test-WithMultipleArgs function is called with wrong arguments" {
+        Import-Module ../src/PMock
+
+        $functionName = 'Test-WithMultipleArgs'
+        Set-AssertableFunction $module $functionName { "Override-First" }
+        $value = $module.'Test-WithMultipleArgs'($true)
+        $wasCalled = Assert-FunctionWasCalled $module $functionName $false $true
+        $wasCalled.should.be($false)
 
         Remove-Module PMock
     }
