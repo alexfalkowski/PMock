@@ -6,7 +6,6 @@ function Set-AssertableFunction($module, $functionName, $script) {
     $newScriptBlock = { 
         New-Event -SourceIdentifier $functionName -EventArguments $args | out-null
         Invoke-Command $script -ArgumentList $args
-        #&$script
     }.GetNewClosure()
 
     Set-Function $module $functionName $newScriptBlock
