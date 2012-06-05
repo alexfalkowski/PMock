@@ -17,7 +17,7 @@
 	ScriptsToProcess = @()
 	TypesToProcess = @()
 	FormatsToProcess = @()
-	FunctionsToExport = @('New-Mock', 'Confirm-Mock')
+	FunctionsToExport = @('Set-Function', 'Set-AssertableFunction', 'Assert-FunctionWasCalled')
 	CmdletsToExport = '*'
 	VariablesToExport = ''
 	AliasesToExport = ''
