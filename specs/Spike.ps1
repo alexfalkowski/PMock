@@ -5,7 +5,7 @@ $script = {
     $testValue 
 }
 
-function Set-AssertableFunction($functionName, [scriptblock]$script) {
+function New-MockedModule($functionName, [scriptblock]$script) {
     $setFunction = {
         param($functionaName, [scriptblock]$scriptBlock)
         Set-Item -Path function:$functionaName -Value $scriptBlock.GetNewClosure()
@@ -13,11 +13,15 @@ function Set-AssertableFunction($functionName, [scriptblock]$script) {
         Export-ModuleMember $functionaName
     }
 
-    New-Module -Name MockModule -ScriptBlock $setFunction -Args $functionName, $script | out-null
+    New-Module -Name MockModule -ScriptBlock $setFunction -Args $functionName, $script
 }
 
-Set-AssertableFunction "Test-First" $script
+$module = New-MockedModule "Test-First" $script
+Import-Module $module
 
 Test-First
 
+Remove-Module $module
 Remove-Module TestModule
+
+Get-Module
