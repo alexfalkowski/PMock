@@ -1,19 +1,33 @@
-function Set-Function($module, $functionName, $script) {
-    Add-Member -inputobject $module -membertype ScriptMethod -name $functionName -value $script -passthru -force | out-null
+function New-StubModule($functionName, $script) {
+    $setFunction = {
+        param($functionaName, [scriptblock]$scriptBlock)
+        Set-Item -Path function:$functionaName -Value $scriptBlock.GetNewClosure()
+
+        Export-ModuleMember $functionaName
+    }
+
+    New-Module -Name MockModule -ScriptBlock $setFunction.GetNewClosure() -Args $functionName, $script
 }
 
-function Set-AssertableFunction($module, $functionName, $script) {
-    $newScriptBlock = { 
-        New-Event -SourceIdentifier $functionName -EventArguments $args | out-null
-        Invoke-Command $script -ArgumentList $args
-    }.GetNewClosure()
+function New-MockModule($functionName, $script) {
+    $setFunction = {
+        param($functionName, [scriptblock]$scriptBlock)
 
-    Set-Function $module $functionName $newScriptBlock
+        $eventClosure = {
+            New-Event -SourceIdentifier $functionName -EventArguments $args | out-null
+            Invoke-Command $scriptBlock.GetNewClosure() -ArgumentList $args
+        
+        }.GetNewClosure()
+
+        Set-Item -Path function:$functionName -Value $eventClosure -force
+        Export-ModuleMember $functionName
+    }
+
+    New-Module -Name MockModule -ScriptBlock $setFunction.GetNewClosure() -Args $functionName, $script
 }
 
-function Assert-FunctionWasCalled() {
+function Assert-Mock() {
     param (
-        $module,
         $functionName,
         [parameter(ValueFromRemainingArguments=$true)] $arguments = @()
     )
