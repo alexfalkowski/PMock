@@ -17,7 +17,7 @@ describe "Mock" {
         Remove-Module $module
     }
 
-    it "should Assert-FunctionWasCalled when calling Test-First function once" {
+    it "should Assert-Mock when calling Test-First function once" {
         $functionName = 'Test-First'
         $module = New-MockModule $functionName { "Override-First" }
         Import-Module $module
@@ -27,7 +27,7 @@ describe "Mock" {
         Remove-Module $module
     }
 
-    it "should Assert-FunctionWasCalled when calling Test-First function twice" {
+    it "should Assert-Mock when calling Test-First function twice" {
         $functionName = 'Test-First'
         $module = New-MockModule $functionName { "Override-First" }
         Import-Module $module
@@ -38,7 +38,7 @@ describe "Mock" {
         Remove-Module $module
     }
 
-    it "should only register one event when calling Assert-FunctionWasCalled twice" {
+    it "should only register one event when calling Assert-Mock twice" {
         $functionName = 'Test-First'
         $module = New-MockModule $functionName { "Override-First" }
         Import-Module $module
@@ -49,7 +49,7 @@ describe "Mock" {
         Remove-Module $module
     }
 
-    it "should not Assert-FunctionWasCalled when the Test-First function was not called" {
+    it "should not Assert-Mock when the Test-First function was not called" {
         $functionName = 'Test-First'
         $module = New-MockModule $functionName { "Override-First" }
         Import-Module $module
@@ -58,7 +58,7 @@ describe "Mock" {
         Remove-Module $module
     }
 
-    it "should Assert-FunctionWasCalled when Test-WithSingleArgs function is called with specific arguments" {
+    it "should Assert-Mock when Test-WithSingleArgs function is called with specific arguments" {
         $functionName = 'Test-WithSingleArgs'
         $module = New-MockModule $functionName { "Override-First $($args[0])" }
         Import-Module $module
@@ -69,7 +69,7 @@ describe "Mock" {
         Remove-Module $module
     }
 
-    it "should not Assert-FunctionWasCalled when Test-WithSingleArgs function is called with wrong arguments" {
+    it "should not Assert-Mock when Test-WithSingleArgs function is called with wrong arguments" {
         $functionName = 'Test-WithSingleArgs'
         $module = New-MockModule $functionName { "Override-First $($args[0])" }
         Import-Module $module
@@ -80,7 +80,7 @@ describe "Mock" {
         Remove-Module $module
     }
 
-    it "should Assert-FunctionWasCalled when Test-WithMultipleArgs function is called with specific arguments" {
+    it "should Assert-Mock when Test-WithMultipleArgs function is called with specific arguments" {
         $functionName = 'Test-WithSingleArgs'
         $module = New-MockModule $functionName { "Override-First $($args[0])" }
         Import-Module $module
@@ -91,7 +91,7 @@ describe "Mock" {
         Remove-Module $module
     }
 
-    it "should not Assert-FunctionWasCalled when Test-WithMultipleArgs function is called with wrong arguments" {
+    it "should not Assert-Mock when Test-WithMultipleArgs function is called with wrong arguments" {
         $functionName = 'Test-WithSingleArgs'
         $module = New-MockModule $functionName { "Override-First $($args[0])" }
         Import-Module $module
