@@ -1,6 +1,16 @@
 describe "Mock" {
     Import-Module ../src/PMock
 
+    it "should override imported module" {
+        Import-Module ./TestModule.psm1
+        $module = New-StubModule 'Test-First' { "Override-First" }
+        Import-Module $module
+        $first = Test-First
+        $first.should.be("Override-First")
+        Remove-Module $module
+        Remove-Module TestModule
+    }
+
     it "should override first function" {
         $module = New-StubModule 'Test-First' { "Override-First" }
         Import-Module $module
