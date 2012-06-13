@@ -19,6 +19,19 @@ describe "Mock" {
         Remove-Module $module
     }
 
+    it "should keep first function after unloading mocked module" {
+        $module = New-StubModule 'Test-First' { "Override-First" }
+        Import-Module $module
+        $first = Test-First
+        $first.should.be("Override-First")
+        Remove-Module $module
+
+        Import-Module ./TestModule.psm1
+        $first = Test-First
+        $first.should.be("Test-First")
+        Remove-Module TestModule
+    }
+
     it "should override second function" {
         $module = New-StubModule 'Test-Second' { "Override-Second" }
         Import-Module $module
