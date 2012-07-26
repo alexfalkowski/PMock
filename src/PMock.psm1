@@ -1,3 +1,13 @@
+function New-ManagedModule($functionName, $script, $scriptBlock) {
+    $module = New-Module -Name MockModule -ScriptBlock $scriptBlock -Args $functionName, $script
+
+    $module.OnRemove = { 
+        Remove-Event -SourceIdentifier "*"
+    }
+
+    return $module
+}
+
 function New-StubModule($functionName, $script) {
     $setFunction = {
         param($functionaName, [scriptblock]$scriptBlock)
@@ -6,7 +16,7 @@ function New-StubModule($functionName, $script) {
         Export-ModuleMember $functionaName
     }
 
-    New-Module -Name MockModule -ScriptBlock $setFunction.GetNewClosure() -Args $functionName, $script
+    return New-ManagedModule $functionName $script $setFunction.GetNewClosure()
 }
 
 function New-MockModule($functionName, $script) {
@@ -23,7 +33,7 @@ function New-MockModule($functionName, $script) {
         Export-ModuleMember $functionName
     }
 
-    New-Module -Name MockModule -ScriptBlock $setFunction.GetNewClosure() -Args $functionName, $script
+    return New-ManagedModule $functionName $script $setFunction.GetNewClosure()
 }
 
 function Assert-Mock() {

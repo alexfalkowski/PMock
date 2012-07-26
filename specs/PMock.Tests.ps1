@@ -125,5 +125,19 @@ describe "Mock" {
         Remove-Module $module
     }
 
+    it "should not Assert-Mock when the module is reloaded" {
+        $functionName = 'Test-WithSingleArgs'
+        $module = New-MockModule $functionName { "Override-First $($args[0])" }
+        Import-Module $module
+        $value = Test-WithSingleArgs $true $true
+        Remove-Module $module
+        $module = New-MockModule $functionName { "Override-First $($args[0])" }
+        Import-Module $module
+        $wasCalled = Assert-Mock $functionName $true $true
+        $value.should.be("Override-First True")
+        $wasCalled.should.be($false)
+        Remove-Module $module
+    }
+
     Remove-Module PMock
 }
