@@ -7,6 +7,7 @@ Usage
 -----
 
 To use this module you need to install the module from [PSGet](http://psget.net/) using the command:
+	
 	Install-Module PMock
 
 Once you have module installed this example overrides a function name by creating a mock module:
