@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>PMock</id>
+    <version>1.0.0</version>
+    <authors>Alex Falkowski</authors>
+    <owners>Alex Falkowski</owners>
+    <licenseUrl>https://github.com/alexfalkowski/PMock/blob/master/README.md</licenseUrl>
+    <projectUrl>https://github.com/alexfalkowski/PMock</projectUrl>
+    <iconUrl>https://github.com/alexfalkowski/PMock/raw/master/logo.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A PowerShell mocking framework</description>
+    <copyright>Copyright 2012</copyright>
+    <tags>powershell pester psget</tags>
+  </metadata>
+  <files>
+    <file src="src\*.*" target="content" />
+  </files>
+</package>
